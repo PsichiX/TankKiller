@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<Material
+   effect="raw/color_shader"
+   blendMode="false"
+   blendingSource="ONE"
+   blendingDestination="ZERO"
+   >
+   <Samplers>
+      <Sampler0
+         name="uSamp"
+         image="drawable/menu_bg"
+         filteringMin="NEAREST"
+         filteringMag="NEAREST"
+         wrappingVertical="REPEAT"
+         wrappingHorizontal="REPEAT"
+         />
+   </Samplers>
+</Material>

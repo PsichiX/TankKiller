@@ -53,7 +53,7 @@ public class MenuState extends State {
 		Touch t = ev.getTouchByState(Touch.State.DOWN);
 		
 		if(t!= null){
-		//	getApplication().pushState(new GameState());
+			getApplication().pushState(new TestState());
 		}
 
 	}

@@ -30,6 +30,6 @@ public class MainActivity extends XeActivity
 		getApplicationCore().getPhoton().getRenderer().getTimer().setFixedStep(1000 / 30);
 		getApplicationCore().getPhoton().setRenderMode(XePhoton.RenderMode.QUEUE, true);
 		getApplicationCore().getPhoton().getRenderer().setClearBackground(true, 0.0f, 0.0f, 0.0f, 1.0f);
-		getApplicationCore().run(new TestState());
+		getApplicationCore().run(new MenuState());
 	}
 }

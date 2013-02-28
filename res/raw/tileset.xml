@@ -2,9 +2,9 @@
 <TileSet
 	materialPath="raw/terrain_material"
 	cols="8"
-	rows="8"
-	width="256"
-	height="256"
+	rows="6"
+	width="512"
+	height="384"
 	padding="0.5"
 >
 	<Tile id="0" col="0" row="0" />

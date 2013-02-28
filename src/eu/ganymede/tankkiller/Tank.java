@@ -8,7 +8,7 @@ import com.PsichiX.XenonCoreDroid.XeUtils.*;
 import com.PsichiX.XenonCoreDroid.XeSense;
 import com.PsichiX.XenonCoreDroid.XeApplication.*;
 
-public class Tank extends ActorSprite implements ICollidable, IControlable
+public class Tank extends ActorSprite implements ICollidable, ITurnable
 {
 	private CollisionManager _collMan;
 	private Controler _controler;
@@ -74,6 +74,11 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	public void setReceiver(CommandQueue cmds)
 	{
 		_rcv = cmds;
+	}
+	
+	public void onTurnChanged(boolean my)
+	{
+		
 	}
 	
 	@Override

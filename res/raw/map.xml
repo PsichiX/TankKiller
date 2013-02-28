@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<TileMapGenerator tilesetPath="raw/tileset">
+	<Maps>
+		<!--<Map name="map" cols="8" rows="6">
+			0 1 1 0 1 1 1 1
+			0 1 0 0 1 1 1 0
+			0 1 1 0 0 0 1 0
+			0 1 1 0 0 0 0 1
+			0 1 1 1 1 1 0 0
+			0 0 0 0 0 0 0 0
+		</Map>-->
+		<!--<Map name="map" cols="8" rows="8">
+			0 0 0 0 0 0 0 0
+			0 0 1 1 1 1 0 0
+			0 1 1 0 0 1 1 0
+			0 1 0 0 0 0 1 0
+			0 1 0 0 0 0 1 0
+			0 1 1 0 0 1 1 0
+			0 0 1 1 1 1 0 0
+			0 0 0 0 0 0 0 0
+		</Map>
+		 <Map name="map" cols="8" rows="8">
+			0 0 0 1 1 1 1 0
+			0 0 0 1 1 1 1 0
+			0 0 0 0 1 1 1 0
+			1 1 0 0 0 0 0 0
+			1 1 1 1 0 0 0 0
+			1 1 1 1 1 0 0 0
+			1 1 1 1 1 0 0 0
+			0 0 0 0 0 0 0 0
+		</Map>-->
+	</Maps>
+	<Patterns>
+		<Pattern id="V0" replace="1">
+			~ ~ ~
+			1 0 1
+			~ ~ ~
+		</Pattern>
+		<Pattern id="H0" replace="1">
+			~ 1 ~
+			~ 0 ~
+			~ 1 ~
+		</Pattern>
+		<Pattern id="TR0" replace="1">
+			~ 1 ~
+			~ 0 1
+			1 ~ ~
+		</Pattern>
+		<Pattern id="BR0" replace="1">
+			1 ~ ~
+			~ 0 1
+			~ 1 ~
+		</Pattern>
+		<Pattern id="BL0" replace="1">
+			~ ~ 1
+			1 0 ~
+			~ 1 ~
+		</Pattern>
+		<Pattern id="TL0" replace="1">
+			~ 1 ~
+			1 0 ~
+			~ ~ 1
+		</Pattern>
+		<Pattern id="TR1" replace="1">
+			~ 0 1
+			~ 0 0
+			1 ~ ~
+		</Pattern>
+		<Pattern id="BR1" replace="1">
+			1 ~ ~
+			~ 0 0
+			~ 0 1
+		</Pattern>
+		<Pattern id="BL1" replace="1">
+			~ ~ 1
+			0 0 ~
+			1 0 ~
+		</Pattern>
+		<Pattern id="TL1" replace="1">
+			1 0 ~
+			0 0 ~
+			~ ~ 1
+		</Pattern>
+		<Pattern replace="1B">
+			~ ~ ~
+			~ 0 ~
+			~ 1 ~
+		</Pattern>
+		<Pattern replace="1L">
+			~ ~ ~
+			1 0 ~
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="1T">
+			~ 1 ~
+			~ 0 ~
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="1R">
+			~ ~ ~
+			~ 0 1
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="1BL">
+			~ ~ ~
+			0 0 ~
+			1 0 ~
+		</Pattern>
+		<Pattern replace="1TL">
+			1 0 ~
+			0 0 ~
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="1TR">
+			~ 0 1
+			~ 0 0
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="1BR">
+			~ ~ ~
+			~ 0 0
+			~ 0 1
+		</Pattern>
+		<Pattern replace="0TR">
+			~ ~ ~
+			1 0 ~
+			1 1 ~
+		</Pattern>
+		<Pattern replace="0BR">
+			1 1 ~
+			1 0 ~
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="0BL">
+			~ 1 1
+			~ 0 1
+			~ ~ ~
+		</Pattern>
+		<Pattern replace="0TL">
+			~ ~ ~
+			~ 0 1
+			~ 1 1
+		</Pattern>
+		 <Pattern id="0BL0" replace="0TR">
+			~ ~ ~
+			1 0 ~
+			0 1 ~
+		</Pattern>
+		<Pattern id="0TL0" replace="0BR">
+			0 1 ~
+			1 0 ~
+			~ ~ ~
+		</Pattern>
+		<Pattern id="0TR0" replace="0BL">
+			~ 1 0
+			~ 0 1
+			~ ~ ~
+		</Pattern>
+		<Pattern id="0BR0" replace="0TL">
+			~ ~ ~
+			~ 0 1
+			~ 1 0
+		</Pattern>
+	</Patterns>
+	<Passes>
+		<Pass patterns="
+			V0 H0
+			TR0 BR0 BL0 TL0
+			TR1 BR1 BL1 TL1
+		" repeat="true"/>
+		<Pass patterns="
+			1B 1L 1T 1R
+			1BL 1TL 1TR 1BR
+			0TR 0BR 0BL 0TL
+			0BL0 0TL0 0TR0 0BR0
+		"/>
+	</Passes>
+</TileMapGenerator>

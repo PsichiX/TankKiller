@@ -1,5 +1,7 @@
 package eu.ganymede.tankkiller;
 
+import android.util.Log;
+
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
 import com.PsichiX.XenonCoreDroid.XeUtils.*;
@@ -13,6 +15,9 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	private float _range = 0.0f;
 	private float _movX = 0.0f;
 	private float _movY = 0.0f;
+	
+	private float _destX = 0.0f;
+	private float _destY = 0.0f;
 	private float _spdX = 500.0f;
 	private float _spdY = 500.0f;
 	private float _energy = 100.0f;
@@ -40,12 +45,23 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 		return _movY;
 	}
 	
-	public void setMove(float x, float y)
+
+	public void moveToPos(float x, float y)
 	{
-		_movX = x;
-		_movY = y;
-		if(MathHelper.vecLength(x, y, 0.0f) > 0.0f)
-			setAngle(90.0f + (float)Math.toDegrees(MathHelper.vecDirectionXY(x, y)));
+		float currentPosX = getPositionX();
+		float currentPosY = getPositionY();
+		_destX = x;
+		_destY = y;
+		float deltaX = x - currentPosX; 
+		float deltaY = y - currentPosY;
+		float dest  = MathHelper.vecLength(deltaX, deltaY, 0);
+		if(dest != 0)
+		{
+			_movX = deltaX / dest;
+			_movY = deltaY / dest;
+		}
+		
+		setAngle((float)Math.toDegrees(MathHelper.vecDirectionXY(-deltaX, -deltaY)));
 	}
 	
 	public float getEnergy()
@@ -61,14 +77,14 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	@Override
 	public void onUpdate(float dt)
 	{
-		setPosition(
-			_x + _movX * _spdX * dt,
-			_y + _movY * _spdY * dt
-			);
-		_phase += dt * (2.0f + (6.0f * (1.0f - MathHelper.vecLength(_movX, _movY, 0.0f))));
-		getProperties().setVec("uPhase", new float[]{
-			_phase
-			});
+		Log.d("DIST"," >> " + MathHelper.vecLength(_destX - _x, _destY - _y, 0));
+		if(MathHelper.vecLength(_destX - _x, _destY - _y, 0) > 20)
+		{
+			setPosition(
+				_x + _movX * _spdX * dt,
+				_y + _movY * _spdY * dt
+				);
+		}
 	}
 	
 	@Override
@@ -82,6 +98,7 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	public void onAttach(CollisionManager m)
 	{
 		_collMan = m;
+		Log.d("TANK","ADDED TO STAGE");
 	}
 	
 	public void onDetach(CollisionManager m)

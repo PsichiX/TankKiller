@@ -5,6 +5,8 @@ import com.PsichiX.XenonCoreDroid.XeUtils.*;
 import com.PsichiX.XenonCoreDroid.XeApplication.*;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
+
+import java.security.acl.LastOwnerException;
 import java.util.Random;
 
 public class TestState extends State implements CommandQueue.Delegate
@@ -26,6 +28,11 @@ public class TestState extends State implements CommandQueue.Delegate
 	private int[] _area = new int[]{ -1, -1 };
 	private int[] _padding = new int[]{ 5, 5 };
 	private float[] _startLoc;
+	private Text turnTimerText;
+	private float turnTimer = 45;
+	private int turnLastTime = 45;
+	private Font font;
+	private Material fontMaterial;
 	
 	@Override
 	public void onEnter()
@@ -77,7 +84,25 @@ public class TestState extends State implements CommandQueue.Delegate
 		_controler.setTarget(_tank);
 		_actors.attach(_controler);
 		
+		font = (Font)getApplication().getAssets().get(R.raw.badaboom_font, Font.class);
+		fontMaterial = (Material)getApplication().getAssets().get(R.raw.badaboom_material, Material.class);
+		
+		turnTimerText = new Text();
+		_scnHud.attach(turnTimerText);
+		turnTimerText.setPosition(_camHud.getViewWidth(),_camHud.getViewHeight());
+		setTimerText(0);
+		
+		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 1.0f, 0.0f, 0.0f, 1.0f);
+	}
+	
+	private void setTimerText(int value)
+	{
+		if(value != turnLastTime)
+		{
+			turnLastTime = value;
+			turnTimerText.build("Time left: "+value,font, fontMaterial,Font.Alignment.RIGHT, Font.Alignment.BOTTOM, 1.0f, 1.0f);
+		}
 	}
 	
 	@Override
@@ -131,8 +156,11 @@ public class TestState extends State implements CommandQueue.Delegate
 	{
 		getApplication().getSense().setCoordsOrientation(-1);
 		
+		
 		//float dt = getApplication().getTimer().getDeltaTime() / 1000.0f;
 		float dt = 1.0f / 30.0f;
+		turnTimer -= dt;
+		setTimerText((int)turnTimer);
 		
 		_cmds.run();
 		_actors.onUpdate(dt);

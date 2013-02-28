@@ -23,10 +23,12 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	private float _energy = 100.0f;
 	private CommandQueue _rcv;
 	private float _phase = 0.0f;
+	private Sprite _tower;
 	
-	public Tank(Material mat)
+	public Tank(Material mat, Sprite tower)
 	{
 		super(mat);
+		this._tower = tower;
 	}
 	
 	public void setSpeed(float x, float y)
@@ -94,6 +96,16 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 			getCollisionManager().detach(this);
 	}
 	
+	@Override
+	public void setScene(Scene s)
+	{
+		super.setScene(s);
+		if(s != null)
+			s.attach(_tower);
+		else
+			_tower.getScene().detach(_tower);	
+	}
+	
 	public void onAttach(CollisionManager m)
 	{
 		_collMan = m;
@@ -146,5 +158,12 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	public Controler getControler()
 	{
 		return _controler;
+	}
+	
+	@Override
+	public void setPosition(float x, float y, float z)
+	{
+		super.setPosition(x, y, z);
+		_tower.setPosition(x, y, z);
 	}
 }

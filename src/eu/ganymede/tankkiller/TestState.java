@@ -65,7 +65,7 @@ public class TestState extends State implements CommandQueue.Delegate
 		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 1.0f, 0.0f, 1.0f);
 		
-		_tank = TankFactory.getFactory().createTank(TankColor.BLUE);
+		_tank = TankFactory.getFactory().createTank(TankColor.RED);
 		_tank.setPosition(_width * 0.5f, _height * 0.5f);
 		_tank.setRange(_tank.getHeight() * 0.5f);
 		_tank.setReceiver(_cmds);

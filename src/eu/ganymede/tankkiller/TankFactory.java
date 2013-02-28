@@ -48,6 +48,4 @@ public class TankFactory {
 		tank.setOffsetFromSize(0.5f, 0.5f);
 		return tank;
 	}
-	
-
 }

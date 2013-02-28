@@ -61,7 +61,7 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 			_movY = deltaY / dest;
 		}
 		
-		setAngle((float)Math.toDegrees(MathHelper.vecDirectionXY(-deltaX, -deltaY)));
+		setAngle((float)(Math.toDegrees(MathHelper.vecDirectionXY(-deltaX, -deltaY)) + 90));
 	}
 	
 	public float getEnergy()

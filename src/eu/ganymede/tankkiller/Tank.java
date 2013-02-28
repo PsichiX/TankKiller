@@ -77,7 +77,6 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 	@Override
 	public void onUpdate(float dt)
 	{
-		Log.d("DIST"," >> " + MathHelper.vecLength(_destX - _x, _destY - _y, 0));
 		if(MathHelper.vecLength(_destX - _x, _destY - _y, 0) > 20)
 		{
 			setPosition(

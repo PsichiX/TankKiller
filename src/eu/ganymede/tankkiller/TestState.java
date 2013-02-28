@@ -18,13 +18,14 @@ public class TestState extends State implements CommandQueue.Delegate
 	private CommandQueue _cmds = new CommandQueue();
 	private TileMap _map;
 	private Tank _tank;
-	private Controler _controler;
+	//private Controler _controler;
 	private final int _cols = 50;
 	private final int _rows = 50;
 	private final float _width = _cols * 100.0f;
 	private final float _height = _rows * 100.0f;
 	private int[] _area = new int[]{ -1, -1 };
 	private int[] _padding = new int[]{ 5, 5 };
+	private float[] _startLoc;
 	
 	@Override
 	public void onEnter()
@@ -35,6 +36,7 @@ public class TestState extends State implements CommandQueue.Delegate
 		
 		_scn = (Scene)getApplication().getAssets().get(R.raw.scene, Scene.class);
 		_cam = (Camera2D)_scn.getCamera();
+		_cam.setViewPosition(_width * 0.5f, _height * 0.5f);
 		_scnHud = (Scene)getApplication().getAssets().get(R.raw.hud_scene, Scene.class);
 		_camHud = (Camera2D)_scnHud.getCamera();
 		_camHud.setViewPosition(
@@ -49,10 +51,10 @@ public class TestState extends State implements CommandQueue.Delegate
 		for(int i = 0; i < md.length; i++)
 			md[i] = "0";
 		Random r = new Random(System.currentTimeMillis());
-		for(int i = 0; i < 15; i++)
-			applyCircle(md, _cols, _rows, Math.abs(r.nextInt()) % (_cols - 1), Math.abs(r.nextInt()) % (_rows - 1), 10 + Math.abs(r.nextInt()) % 50, "1");
-		for(int i = 0; i < 25; i++)
-			applyCircle(md, _cols, _rows, Math.abs(r.nextInt()) % (_cols - 1), Math.abs(r.nextInt()) % (_rows - 1), 5 + Math.abs(r.nextInt()) % 25, "0");
+		for(int i = 0; i < 10; i++)
+			applyCircle(md, _cols, _rows, Math.abs(r.nextInt()) % (_cols - 1), Math.abs(r.nextInt()) % (_rows - 1), 5 + Math.abs(r.nextInt()) % 15, "1");
+		for(int i = 0; i < 10; i++)
+			applyCircle(md, _cols, _rows, Math.abs(r.nextInt()) % (_cols - 1), Math.abs(r.nextInt()) % (_rows - 1), 1 + Math.abs(r.nextInt()) % 7, "0");
 		_map = new TileMap();
 		map.applyPatterns("terrain");
 		map.buildCompatibleTileMap("terrain", _map, _width, _height, 1.0f, 1.0f);
@@ -63,21 +65,21 @@ public class TestState extends State implements CommandQueue.Delegate
 		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 1.0f, 0.0f, 1.0f);
 		
-		Material mat = (Material)getApplication().getAssets().get(R.raw.tank_material, Material.class);
-		Image img = (Image)getApplication().getAssets().get(R.drawable.swallow, Image.class);
-		_tank = new Tank(mat);
-		_tank.setSizeFromImage(img);
-		_tank.setOffsetFromSize(0.5f, 0.5f);
-		_tank.setPosition(_width * 0.5f, _height * 0.5f);
-		_tank.setRange(_tank.getHeight() * 0.5f);
-		_tank.setReceiver(_cmds);
-		_scn.attach(_tank);
-		_actors.attach(_tank);
-		_colls.attach(_tank);
+//		Material mat = (Material)getApplication().getAssets().get(R.raw.tank_material, Material.class);
+//		Image img = (Image)getApplication().getAssets().get(R.drawable.swallow, Image.class);
+//		_tank = new Tank(mat);
+//		_tank.setSizeFromImage(img);
+//		_tank.setOffsetFromSize(0.5f, 0.5f);
+//		_tank.setPosition(_width * 0.5f, _height * 0.5f);
+//		_tank.setRange(_tank.getHeight() * 0.5f);
+//		_tank.setReceiver(_cmds);
+//		_scn.attach(_tank);
+//		_actors.attach(_tank);
+//		_colls.attach(_tank);
 		
-		_controler = new TouchControler(getApplication().getAssets(), _scnHud, 100.0f, 75.0f, _camHud.getViewHeight() - 75.0f);
-		_controler.setTarget(_tank);
-		_actors.attach(_controler);
+		//_controler = new TouchControler(getApplication().getAssets(), _scnHud, 100.0f, 75.0f, _camHud.getViewHeight() - 75.0f);
+		//_controler.setTarget(_tank);
+		//_actors.attach(_controler);
 		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 1.0f, 0.0f, 0.0f, 1.0f);
 	}
@@ -96,6 +98,29 @@ public class TestState extends State implements CommandQueue.Delegate
 	public void onInput(Touches ev)
 	{
 		_actors.onInput(ev);
+		Touch t = ev.getTouchByState(Touch.State.DOWN);
+		if(t != null)
+		{
+			_startLoc = _scn.getCamera().convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
+		}
+		t = ev.getTouchByState(Touch.State.UP);
+		if(t != null)
+		{
+			_startLoc = null;
+		}
+		t = ev.getTouchByState(Touch.State.IDLE);
+		if(t != null && _startLoc != null)
+		{
+			float[] loc = _scn.getCamera().convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
+			loc[0] -= _startLoc[0];
+			loc[1] -= _startLoc[1];
+			float w = _cam.getViewWidth() * 0.5f;
+			float h = _cam.getViewHeight() * 0.5f;
+			_cam.setViewPosition(
+				Math.max(w, Math.min(_width - w, _cam.getViewPositionX() - loc[0])),
+				Math.max(h, Math.min(_height - h, _cam.getViewPositionY() - loc[1]))
+				);
+		}
 	}
 	
 	@Override
@@ -116,16 +141,16 @@ public class TestState extends State implements CommandQueue.Delegate
 		_cmds.run();
 		_actors.onUpdate(dt);
 		_colls.test();
-		float w = _cam.getViewWidth() * 0.5f;
-		float h = _cam.getViewHeight() * 0.5f;
-		_tank.setPosition(
-			Math.max(0.0f, Math.min(_width, _tank.getPositionX())),
-			Math.max(0.0f, Math.min(_height, _tank.getPositionY()))
-			);
-		_cam.setViewPosition(
-			Math.max(w, Math.min(_width - w, _tank.getPositionX())),
-			Math.max(h, Math.min(_height - h, _tank.getPositionY()))
-			);
+//		float w = _cam.getViewWidth() * 0.5f;
+//		float h = _cam.getViewHeight() * 0.5f;
+//		_tank.setPosition(
+//			Math.max(0.0f, Math.min(_width, _tank.getPositionX())),
+//			Math.max(0.0f, Math.min(_height, _tank.getPositionY()))
+//			);
+//		_cam.setViewPosition(
+//			Math.max(w, Math.min(_width - w, _tank.getPositionX())),
+//			Math.max(h, Math.min(_height - h, _tank.getPositionY()))
+//			);
 		int[] tloc = _map.convertLocationWorldToTile(
 			_cam.getViewPositionX(),
 			_cam.getViewPositionY()

@@ -18,7 +18,7 @@ public class TestState extends State implements CommandQueue.Delegate
 	private CommandQueue _cmds = new CommandQueue();
 	private TileMap _map;
 	private Tank _tank;
-	//private Controler _controler;
+	private Controler _controler;
 	private final int _cols = 50;
 	private final int _rows = 50;
 	private final float _width = _cols * 100.0f;
@@ -65,21 +65,21 @@ public class TestState extends State implements CommandQueue.Delegate
 		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 1.0f, 0.0f, 1.0f);
 		
-//		Material mat = (Material)getApplication().getAssets().get(R.raw.tank_material, Material.class);
-//		Image img = (Image)getApplication().getAssets().get(R.drawable.swallow, Image.class);
-//		_tank = new Tank(mat);
-//		_tank.setSizeFromImage(img);
-//		_tank.setOffsetFromSize(0.5f, 0.5f);
-//		_tank.setPosition(_width * 0.5f, _height * 0.5f);
-//		_tank.setRange(_tank.getHeight() * 0.5f);
-//		_tank.setReceiver(_cmds);
-//		_scn.attach(_tank);
-//		_actors.attach(_tank);
-//		_colls.attach(_tank);
+		Material mat = (Material)getApplication().getAssets().get(R.raw.tank_material, Material.class);
+		Image img = (Image)getApplication().getAssets().get(R.drawable.swallow, Image.class);
+		_tank = new Tank(mat);
+		_tank.setSizeFromImage(img);
+		_tank.setOffsetFromSize(0.5f, 0.5f);
+		_tank.setPosition(_width * 0.5f, _height * 0.5f);
+		_tank.setRange(_tank.getHeight() * 0.5f);
+		_tank.setReceiver(_cmds);
+		_scn.attach(_tank);
+		_actors.attach(_tank);
+		_colls.attach(_tank);
 		
-		//_controler = new TouchControler(getApplication().getAssets(), _scnHud, 100.0f, 75.0f, _camHud.getViewHeight() - 75.0f);
-		//_controler.setTarget(_tank);
-		//_actors.attach(_controler);
+		_controler = new TouchControler();
+		_controler.setTarget(_tank);
+		_actors.attach(_controler);
 		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 1.0f, 0.0f, 0.0f, 1.0f);
 	}

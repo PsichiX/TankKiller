@@ -102,7 +102,7 @@ public class Tank extends ActorSprite implements ICollidable, IControlable
 		super.setScene(s);
 		if(s != null)
 			s.attach(_tower);
-		else
+		else if(_tower != null && _tower.getScene() != null)
 			_tower.getScene().detach(_tower);	
 	}
 	

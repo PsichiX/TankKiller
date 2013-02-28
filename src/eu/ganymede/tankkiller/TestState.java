@@ -65,11 +65,7 @@ public class TestState extends State implements CommandQueue.Delegate
 		
 		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 1.0f, 0.0f, 1.0f);
 		
-		Material mat = (Material)getApplication().getAssets().get(R.raw.tank_material, Material.class);
-		Image img = (Image)getApplication().getAssets().get(R.drawable.swallow, Image.class);
-		_tank = new Tank(mat);
-		_tank.setSizeFromImage(img);
-		_tank.setOffsetFromSize(0.5f, 0.5f);
+		_tank = TankFactory.getFactory().createTank(TankColor.BLUE);
 		_tank.setPosition(_width * 0.5f, _height * 0.5f);
 		_tank.setRange(_tank.getHeight() * 0.5f);
 		_tank.setReceiver(_cmds);

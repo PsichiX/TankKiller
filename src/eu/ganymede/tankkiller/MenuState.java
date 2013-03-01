@@ -15,6 +15,7 @@ import com.PsichiX.XenonCoreDroid.Framework.Graphics.Text;
 import com.PsichiX.XenonCoreDroid.XeApplication.State;
 import com.PsichiX.XenonCoreDroid.XeApplication.Touch;
 import com.PsichiX.XenonCoreDroid.XeApplication.Touches;
+import com.PsichiX.XenonCoreDroid.XeUtils.Message;
 
 public class MenuState extends State {
 	
@@ -29,6 +30,7 @@ public class MenuState extends State {
 	private Material _fontMaterial;
 	
 	private Sprite[] _tanks;
+	private Sprite[] _shields;
 	
 	private boolean[] _tanksChoosed;
 	TankColor[] colors = new TankColor[4];
@@ -58,6 +60,7 @@ public class MenuState extends State {
 		_scnHud.attach(_chooseTankText);
 		
 		_tanks = new Sprite[4];
+		_shields = new Sprite[4];
 		_tanksChoosed = new boolean[4];
 		
 		createTanks();
@@ -97,12 +100,17 @@ public class MenuState extends State {
 					tankHit = true;
 					Log.d("TANK!",""+i);
 					_tanksChoosed[i] = !_tanksChoosed[i];
+					_shields[i].setVisible(_tanksChoosed[i]);
 				}
 			}
 			
 			if(!tankHit)
 			{
-				getApplication().pushState(new GameState(prepearePlayerInfos()));	
+				PlayerInfo[] infos = prepearePlayerInfos();
+				if(infos.length > 1)
+					getApplication().pushState(new GameState(infos));
+				else
+					Message.alert(getApplication().getContext(), "WARNING!", "SELECT MORE TANKS!", "OK", null);
 			}
 		}
 	}
@@ -129,6 +137,12 @@ public class MenuState extends State {
 			_scnHud.attach(_tanks[i]);
 			_tanks[i].setPosition(startX + _tanks[i].getWidth() * i + 50, startY + _tanks[i].getHeight());
 			_tanksChoosed[i] = false;
+			_shields[i] = createShield();
+			_shields[i].setPosition(_tanks[i].getPositionX() - _tanks[i].getOffsetX() + _shields[i].getOffsetX(),
+					_tanks[i].getPositionY() - _tanks[i].getOffsetY() + _shields[i].getOffsetY()
+					);
+			_shields[i].setVisible(false);
+			_scnHud.attach(_shields[i]);
 		}
 	}
 	
@@ -163,5 +177,16 @@ public class MenuState extends State {
 			}
 		}
 		return pis;
+	}
+	
+	private Sprite createShield()
+	{
+		Material mat = (Material)MainActivity.app.getAssets().get(R.raw.life_shield_material, Material.class);
+		Image img = (Image)MainActivity.app.getAssets().get(R.drawable.life_shield, Image.class);
+		
+		Sprite lifeShield = new Sprite(mat);
+		lifeShield.setSizeFromImage(img, 0.5f);
+		lifeShield.setOffsetFromSize(0.5f, 0.5f);
+		return lifeShield;
 	}
 }

@@ -6,6 +6,7 @@ import com.PsichiX.XenonCoreDroid.XeApplication.*;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -240,6 +241,8 @@ public class GameState extends State implements CommandQueue.Delegate
 	{
 		if(cmd.equals("NextPlayer") && data instanceof Tank)
 		{
+			if(_turns.getPlayersCount() <= 0)
+				getApplication().popState();
 			_startLoc = null;
 			Tank tank = (Tank)data;
 			setPlayerText(tank.getName());
@@ -279,6 +282,18 @@ public class GameState extends State implements CommandQueue.Delegate
 				if(Utils.hitTest(tank, x, y))
 					_actors.detach(tank);
 			}
+		}
+		Random r = new Random(System.currentTimeMillis());
+		for(int i = 0; i < 6; i++)
+		{
+			float rx = (r.nextFloat() * 128.0f) - 64.0f;
+			float ry = (r.nextFloat() * 128.0f) - 64.0f;
+			Material mat = (Material)getApplication().getAssets().get(R.raw.explosion_material, Material.class);
+			Explosion e = new Explosion(mat, 0.5f + (r.nextFloat() * 0.5f));
+			e.setSize(128.0f, 128.0f);
+			e.setPosition(x + rx, y + ry);
+			_scn.attach(e);
+			_actors.attach(e);
 		}
 	}
 	

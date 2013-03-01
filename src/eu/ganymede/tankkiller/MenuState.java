@@ -22,16 +22,12 @@ public class MenuState extends State {
 
 	private Camera2D _camHud;
 	private Scene _scnHud;
-	
-	Sprite background;
-	
 	private Text _chooseTankText;
 	private Font _font;
 	private Material _fontMaterial;
-	
+	private Sprite _btnPlay;
 	private Sprite[] _tanks;
 	private Sprite[] _shields;
-	
 	private boolean[] _tanksChoosed;
 	TankColor[] colors = new TankColor[4];
 	
@@ -47,13 +43,6 @@ public class MenuState extends State {
 			_camHud.getViewHeight() * 0.5f
 			);
 		
-//		Material matBg = (Material) getApplication().getAssets().get(R.raw.menu_bg_mat, Material.class);
-//		Image bgImg = (Image) getApplication().getAssets().get(R.drawable.menu_bg, Image.class);
-//		
-//		background = new Sprite(matBg);
-//		background.setSize(cam.getViewWidth(), cam.getViewHeight());
-//		background.setTextureScaleFromImageAspect(bgImg, true);
-		
 		_font = (Font)getApplication().getAssets().get(R.raw.badaboom_font, Font.class);
 		_fontMaterial = (Material)getApplication().getAssets().get(R.raw.badaboom_material, Material.class);
 		
@@ -61,6 +50,15 @@ public class MenuState extends State {
 		_chooseTankText.build("Select players", _font, _fontMaterial, Font.Alignment.CENTER, Font.Alignment.TOP, 1.0f, 1.0f);
 		_chooseTankText.setPosition(_camHud.getViewWidth() * 0.5f, 48.0f);
 		_scnHud.attach(_chooseTankText);
+		
+		Material mat = (Material)getApplication().getAssets().get(R.raw.play_btn_material, Material.class);
+		Image img = (Image)getApplication().getAssets().get(R.drawable.btn_play, Image.class);
+		
+		_btnPlay = new Sprite(mat);
+		_btnPlay.setSizeFromImage(img, 0.5f);
+		_btnPlay.setOffsetFromSize(0.5f, 0.5f);
+		_btnPlay.setPosition(_camHud.getViewWidth() * 0.5f, (_camHud.getViewHeight() * 0.5f) + 32.0f);
+		_scnHud.attach(_btnPlay);
 		
 		_tanks = new Sprite[4];
 		_shields = new Sprite[4];
@@ -107,7 +105,15 @@ public class MenuState extends State {
 				}
 			}
 			
-			if(!tankHit)
+//			if(!tankHit)
+//			{
+//				PlayerInfo[] infos = prepearePlayerInfos();
+//				if(infos.length > 1)
+//					getApplication().pushState(new GameState(infos));
+//				else
+//					Message.alert(getApplication().getContext(), "WARNING!", "SELECT MORE TANKS!", "OK", null);
+//			}
+			if(!tankHit && Utils.hitTest(_btnPlay, loc[0], loc[1]))
 			{
 				PlayerInfo[] infos = prepearePlayerInfos();
 				if(infos.length > 1)

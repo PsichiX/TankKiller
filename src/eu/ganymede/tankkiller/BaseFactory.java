@@ -33,7 +33,7 @@ public class BaseFactory
 		case BLUE:
 		default:
 			mat = (Material)MainActivity.app.getAssets().get(R.raw.base_material, Material.class);
-			img = (Image)MainActivity.app.getAssets().get(R.drawable.tank_mock, Image.class);
+			img = (Image)MainActivity.app.getAssets().get(R.drawable.base_build, Image.class);
 			break;
 		}
 		base = new Base(mat,color);

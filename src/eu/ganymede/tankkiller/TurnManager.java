@@ -87,6 +87,11 @@ public class TurnManager
 		_players.clear();
 	}
 	
+	public int getPlayersCount()
+	{
+		return _players.size();
+	}
+	
 	public void resetTimer()
 	{
 		_timeTurnLeft = _timePerTurn;

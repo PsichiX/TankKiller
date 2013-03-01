@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<Material
+   effect="raw/alpha_color_shader"
+   blendMode="true"
+   blendingSource="SRC_ALPHA"
+   blendingDestination="ONE"
+   >
+   <Samplers>
+      <Sampler0
+         name="uSamp"
+         image="drawable/explosion"
+         filteringMin="LINEAR"
+         filteringMag="LINEAR"
+         wrappingVertical="REPEAT"
+         wrappingHorizontal="REPEAT"
+         />
+   </Samplers>
+</Material>

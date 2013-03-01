@@ -74,4 +74,13 @@ public class TankFactory {
 		tank.setOffsetFromSize(0.5f, 0.6f);
 		return tank;
 	}
+	
+	public float[] getTankWSize()
+	{
+		Image img = (Image)MainActivity.app.getAssets().get(R.drawable.tank_base_red, Image.class);
+		float[] size = new float[2];
+		size[0] = img.getTexture().getWidth();
+		size[1] = img.getTexture().getHeight();
+		return size;
+	}
 }

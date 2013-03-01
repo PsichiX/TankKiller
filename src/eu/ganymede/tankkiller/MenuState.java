@@ -131,11 +131,13 @@ public class MenuState extends State {
 		float startX = 50.0f;
 		float startY = 50.0f;
 		
+		float distance = (_camHud.getViewWidth() - (4 * TankFactory.getFactory().getTankWSize()[0])) /5;
+		
 		for(int i = 0; i < 4; i++)
 		{
 			_tanks[i] = TankFactory.getFactory().createTank(colors[i], 0.0f, 0.0f);
 			_scnHud.attach(_tanks[i]);
-			_tanks[i].setPosition(startX + _tanks[i].getWidth() * i + 50, startY + _tanks[i].getHeight());
+			_tanks[i].setPosition((_tanks[i].getWidth() + distance) * i + distance, startY + _tanks[i].getHeight());
 			_tanksChoosed[i] = false;
 			_shields[i] = createShield();
 			_shields[i].setPosition(_tanks[i].getPositionX() - _tanks[i].getOffsetX() + _shields[i].getOffsetX(),

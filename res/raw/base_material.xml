@@ -8,7 +8,7 @@
    <Samplers>
       <Sampler0
          name="uSamp"
-         image="drawable/tank_mock"
+         image="drawable/base_build"
          filteringMin="LINEAR"
          filteringMag="LINEAR"
          wrappingVertical="REPEAT"

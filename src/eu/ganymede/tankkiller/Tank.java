@@ -28,6 +28,8 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	private CommandQueue _rcv;
 	private Sprite _tower;
 	private TankColor _color;
+	
+	private int _score = 0;
 //	private float _pointsMovement = 100.0f;
 	
 	public Tank(Material mat, Sprite tower, TankColor color, String name, float initPosX, float initPosY, float initAngle)
@@ -223,5 +225,15 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	public TankColor getColor()
 	{
 		return _color;
+	}
+	
+	public void flagScored()
+	{
+		_score++;
+	}
+	
+	public int getScore()
+	{
+		return _score;
 	}
 }

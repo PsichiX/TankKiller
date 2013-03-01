@@ -1,5 +1,7 @@
 package eu.ganymede.tankkiller;
 
+import android.util.Log;
+
 import com.PsichiX.XenonCoreDroid.Framework.Actors.ActorSprite;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Material;
 
@@ -44,8 +46,16 @@ public class Base extends ActorSprite implements ICollidable
 
 	@Override
 	public void onCollision(ICollidable o) {
-		// TODO Auto-generated method stub
-		
+		if(o instanceof Tank)
+		{
+			Tank t = (Tank) o;
+			if(t.getColor() == _color)
+			{
+				Log.d("BASE <> TANK", "same color " + _color);
+				t.flagScored();
+				Log.d("BASE SCORE"," tank score " + t.getScore());
+			}
+		}
 	}
 	
 	public TankColor getColor()

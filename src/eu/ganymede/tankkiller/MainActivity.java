@@ -37,6 +37,6 @@ public class MainActivity extends XeActivity
 //			new PlayerInfo(TankColor.BLUE),
 //			new PlayerInfo(TankColor.ORANGE)
 //			}));
-		getApplicationCore().run(new MenuState());
+		getApplicationCore().run(new SplashScreenState());
 	}
 }

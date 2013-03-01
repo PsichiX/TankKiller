@@ -23,6 +23,7 @@ public class GameState extends State implements CommandQueue.Delegate
 	private PopupsManager _popups;
 	private boolean _paused = false;
 	private TileMap _map;
+	private Flag _flag;
 	private final int _cols = 50;
 	private final int _rows = 50;
 	private final float _width = _cols * 100.0f;
@@ -95,6 +96,14 @@ public class GameState extends State implements CommandQueue.Delegate
 			_colls.attach(tank);
 			_turns.addPlayer(tank);
 		}
+		
+		Material mat = (Material)MainActivity.app.getAssets().get(R.raw.flag_material, Material.class);
+		Image img = (Image)MainActivity.app.getAssets().get(R.drawable.flaga, Image.class);
+		
+		_flag = new Flag(mat, _width * 0.5f, _height * 0.5f);
+		_flag.setSizeFromImage(img);
+		_flag.setOffsetFromSize(0.5f, 0.5f);
+		_scn.attach(_flag);
 		
 		_font = (Font)getApplication().getAssets().get(R.raw.badaboom_font, Font.class);
 		_fontMaterial = (Material)getApplication().getAssets().get(R.raw.badaboom_material, Material.class);

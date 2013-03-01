@@ -11,39 +11,40 @@ import com.PsichiX.XenonCoreDroid.XeApplication.Touches;
 
 public class SplashScreenState extends State {
 	
-	Camera2D cam;
-	Scene scn;
+	private Camera2D _cam;
+	private Scene _scn;
 	
-	Sprite background;
+	private Sprite _background;
 	
 	@Override
 	public void onEnter()
 	{
-		scn = (Scene)getApplication().getAssets().get(R.raw.scene, Scene.class);
-		cam = (Camera2D)scn.getCamera();
-		cam.setViewPosition(cam.getViewWidth() * 0.5f, cam.getViewHeight() * 0.5f);
+		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.176f, 0.498f, 0.156f, 1.0f);
+		
+		_scn = (Scene)getApplication().getAssets().get(R.raw.hud_scene, Scene.class);
+		_cam = (Camera2D)_scn.getCamera();
+		_cam.setViewPosition(_cam.getViewWidth() * 0.5f, _cam.getViewHeight() * 0.5f);
 		
 		Material matBg = (Material) getApplication().getAssets().get(R.raw.menu_bg_mat, Material.class);
 		Image bgImg = (Image) getApplication().getAssets().get(R.drawable.menu_bg, Image.class);
 		
-		background = new Sprite(matBg);
-		background.setSize(cam.getViewWidth(), cam.getViewHeight());
-		background.setTextureScaleFromImageAspect(bgImg, true);
+		_background = new Sprite(matBg);
+		_background.setSize(_cam.getViewWidth(), _cam.getViewHeight());
 		
-		scn.attach(background);
+		_scn.attach(_background);
 	}
 	
 	@Override
 	public void onReload()
 	{
-		cam.setViewPosition(cam.getViewWidth() * 0.5f, cam.getViewHeight() * 0.5f);
+		_cam.setViewPosition(_cam.getViewWidth() * 0.5f, _cam.getViewHeight() * 0.5f);
 	}
 
 	@Override
 	public void onUpdate()
 	{
 		float dt = getApplication().getTimer().getDeltaTime() * 0.001f;
-		scn.update(dt);
+		_scn.update(dt);
 	}
 	
 	
@@ -61,7 +62,8 @@ public class SplashScreenState extends State {
 	@Override
 	public void onExit()
 	{
-		scn.detachAll();
+		_scn.releaseAll();
+		getApplication().getPhoton().unregisterDrawCalls();
 	}
 	
 }

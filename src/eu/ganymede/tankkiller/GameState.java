@@ -36,6 +36,7 @@ public class GameState extends State implements CommandQueue.Delegate
 	private float _camSpeed = 5000.0f;
 	private Text _turnTimerText;
 	private Text _turnNameText;
+	private Sprite _turnNextBtn;
 	private int _turnLastTime = -1;
 	private Font _font;
 	private Material _fontMaterial;
@@ -51,6 +52,8 @@ public class GameState extends State implements CommandQueue.Delegate
 	@Override
 	public void onEnter()
 	{
+		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 0.0f, 0.0f, 1.0f);
+		
 		//getApplication().getAssets().get(R.raw.camera, Camera2D.class);
 		//Message.alert(getApplication().getContext(), "error", getApplication().getAssets().getLastError(), "ok", null);
 		
@@ -64,8 +67,6 @@ public class GameState extends State implements CommandQueue.Delegate
 			_camHud.getViewHeight() * 0.5f
 			);
 		_popups = new PopupsManager(_scnHud);
-		
-		getApplication().getPhoton().getRenderer().setClearBackground(true, 1.0f, 1.0f, 1.0f, 1.0f);
 		
 		TileMapGenerator map = (TileMapGenerator)getApplication().getAssets().get(R.raw.map, TileMapGenerator.class);
 		String[] md = map.createMap("terrain", _cols, _rows, null);
@@ -81,10 +82,6 @@ public class GameState extends State implements CommandQueue.Delegate
 		map.buildCompatibleTileMap("terrain", _map, _width, _height, 1.0f, 1.0f);
 		map.applyTiles("terrain", _map);
 		_scn.attach(_map);
-		
-		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 0.0f, 1.0f, 1.0f);
-		
-		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 1.0f, 0.0f, 1.0f);
 		
 		for(PlayerInfo player : _players)
 		{
@@ -116,8 +113,13 @@ public class GameState extends State implements CommandQueue.Delegate
 		_turnTimerText.setPosition(_camHud.getViewWidth(), _camHud.getViewHeight());
 		_scnHud.attach(_turnTimerText);
 		setTimerText(0);
-		
-		getApplication().getPhoton().getRenderer().setClearBackground(true, 1.0f, 0.0f, 0.0f, 1.0f);
+		Material mat = (Material)getApplication().getAssets().get(R.raw.turn_next_btn_material, Material.class);
+		Image img = (Image)getApplication().getAssets().get(R.drawable.btn_next_turn, Image.class);
+		_turnNextBtn = new Sprite(mat);
+		_turnNextBtn.setSizeFromImage(img, 0.75f);
+		_turnNextBtn.setOffsetFromSize(0.0f, 1.0f);
+		_turnNextBtn.setPosition(0.0f, _camHud.getViewHeight());
+		_scnHud.attach(_turnNextBtn);
 		
 		_popups.push(new StartPopup(getApplication().getAssets(), _cmds));
 	}
@@ -143,16 +145,23 @@ public class GameState extends State implements CommandQueue.Delegate
 			_startLoc = null;
 			return;
 		}
-		_actors.onInput(ev);
-		Touch t = ev.getTouchByState(Touch.State.DOWN);
-		if(t != null)
-		{
-			_startLoc = _scn.getCamera().convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
-		}
-		t = ev.getTouchByState(Touch.State.UP);
+		Touch t = ev.getTouchByState(Touch.State.UP);
 		if(t != null)
 		{
 			_startLoc = null;
+			float[] locHud = _scnHud.getCamera().convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
+			if(Utils.hitTest(_turnNextBtn, locHud[0], locHud[1]))
+			{
+				_turns.nextPlayer();
+				_turns.resetTimer();
+				return;
+			}
+		}
+		_actors.onInput(ev);
+		t = ev.getTouchByState(Touch.State.DOWN);
+		if(t != null)
+		{
+			_startLoc = _scn.getCamera().convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
 		}
 		t = ev.getTouchByState(Touch.State.IDLE);
 		if(!_paused && t != null && _startLoc != null)
@@ -222,6 +231,7 @@ public class GameState extends State implements CommandQueue.Delegate
 	{
 		if(cmd.equals("NextPlayer") && data instanceof Tank)
 		{
+			_startLoc = null;
 			Tank tank = (Tank)data;
 			setPlayerText(tank.getName());
 			cameraMoveTo(tank.getPositionX(), tank.getPositionY());
@@ -235,6 +245,11 @@ public class GameState extends State implements CommandQueue.Delegate
 		{
 			_turns.stop();
 		}
+		else if(cmd.equals("Shot") && data instanceof float[])
+		{
+			float[] loc = (float[])data;
+			detonate(loc[0], loc[1]);
+		}
 //		else if(cmd.equals("Pause"))
 //		{
 //			_paused = true;
@@ -243,6 +258,19 @@ public class GameState extends State implements CommandQueue.Delegate
 //		{
 //			_paused = false;
 //		}
+	}
+	
+	private void detonate(float x, float y)
+	{
+		for(IActor act : _actors.getActors())
+		{
+			if(act instanceof Tank)
+			{
+				Tank tank = (Tank)act;
+				if(Utils.hitTest(tank, x, y))
+					_actors.detach(tank);
+			}
+		}
 	}
 	
 	private void cameraMoveTo(float x, float y)

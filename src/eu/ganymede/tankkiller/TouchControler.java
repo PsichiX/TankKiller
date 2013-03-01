@@ -9,6 +9,21 @@ public class TouchControler extends Controler
 {
 	private boolean _interrupted = false;
 	private float[] _touchLoc;
+	private float _shotAccum = 0.0f;
+	
+	@Override
+	public void onUpdate(float dt)
+	{
+		if(_touchLoc != null && !_interrupted)
+			_shotAccum += dt;
+		else
+			_shotAccum = 0.0f;
+		if(_shotAccum > 0.5f && getTarget() instanceof Tank)
+		{
+			Tank tank = (Tank)getTarget();
+			tank.getReceiver().queueCommand(this, "Shot", _touchLoc);
+		}
+	}
 	
 	@Override
 	public void onInput(Touches ev)
@@ -17,6 +32,8 @@ public class TouchControler extends Controler
 			return;
 		Tank tank = (Tank)getTarget();
 		Scene scn = tank.getScene();
+		if(scn == null)
+			return;
 		Camera2D cam = (Camera2D)scn.getCamera();
 		
 		Touch t = ev.getTouchByState(Touch.State.UP);

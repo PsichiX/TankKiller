@@ -27,7 +27,7 @@ public class StartPopup extends Popup
 		mat = (Material)ass.get(R.raw.badaboom_material, Material.class);
 		Font font = (Font)ass.get(R.raw.badaboom_font, Font.class);
 		_title = new Text();
-		_title.build("Tap to start", font, mat, Font.Alignment.CENTER, Font.Alignment.MIDDLE, 1.0f, 1.0f);
+		_title.build("Game is paused\n\nTap to start", font, mat, Font.Alignment.CENTER, Font.Alignment.MIDDLE, 1.5f, 1.5f);
 	}
 	
 	@Override
@@ -59,7 +59,6 @@ public class StartPopup extends Popup
 		Touch t = ev.getTouchByState(Touch.State.UP);
 		if(t != null && _rcv != null)
 			_rcv.queueCommand(this, "Start", null);
-//		_man.pop();
 		return true;
 	}
 }

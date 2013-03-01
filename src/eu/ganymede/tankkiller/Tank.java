@@ -10,6 +10,7 @@ import com.PsichiX.XenonCoreDroid.XeApplication.*;
 
 public class Tank extends ActorSprite implements ICollidable, ITurnable
 {
+	private TurnManager _turnMan;
 	private CollisionManager _collMan;
 	private Controler _controler;
 	private float _range = 0.0f;
@@ -97,6 +98,11 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 		_rcv = cmds;
 	}
 	
+	public CommandQueue getReceiver()
+	{
+		return _rcv;
+	}
+	
 	public void onTurnChanged(boolean my)
 	{
 		_canMove = my;
@@ -123,6 +129,8 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 		super.onDetach(m);
 		if(getCollisionManager() != null)
 			getCollisionManager().detach(this);
+		if(getTurnManager() != null)
+			getTurnManager().removePlayerForced(this);
 	}
 	
 	@Override
@@ -138,7 +146,6 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	public void onAttach(CollisionManager m)
 	{
 		_collMan = m;
-		Log.d("TANK","ADDED TO STAGE");
 	}
 	
 	public void onDetach(CollisionManager m)
@@ -149,6 +156,21 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	public CollisionManager getCollisionManager()
 	{
 		return _collMan;
+	}
+	
+	public void onAttach(TurnManager m)
+	{
+		_turnMan = m;
+	}
+	
+	public void onDetach(TurnManager m)
+	{
+		_turnMan = null;
+	}
+	
+	public TurnManager getTurnManager()
+	{
+		return _turnMan;
 	}
 	
 	public float getRange()

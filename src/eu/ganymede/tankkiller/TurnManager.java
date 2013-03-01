@@ -12,7 +12,7 @@ public class TurnManager
 	private CommandQueue _receiver;
 	private int _turnPlayer = -1;
 	private boolean _isRunning = false;
-	private float _timePerTurn = 10.0f;
+	private float _timePerTurn = 30.0f;
 	private float _timeTurnLeft = 0.0f;
 	
 	public TurnManager(ActorsManager acts)
@@ -44,6 +44,7 @@ public class TurnManager
 		if(_isRunning)
 			return;
 		_players.add(p);
+		p.onAttach(this);
 	}
 	
 	public void removePlayer(ITurnable p)
@@ -51,6 +52,33 @@ public class TurnManager
 		if(_isRunning)
 			return;
 		_players.remove(p);
+		p.onDetach(this);
+	}
+	
+	public void removePlayerForced(ITurnable p)
+	{
+		if(!_isRunning)
+			_players.remove(p);
+		else
+		{
+			int remId = _players.indexOf(p);
+			if(remId > _turnPlayer)
+				_players.remove(p);
+			else if(remId == _turnPlayer)
+			{
+				nextPlayer();
+				_turnPlayer--;
+				if(_turnPlayer < 0 && _players.size() > 0)
+					_turnPlayer = 0;
+				_players.remove(p);
+			}
+			else if(remId < _turnPlayer)
+			{
+				_players.remove(p);
+				_turnPlayer--;
+			}
+		}
+		p.onDetach(this);
 	}
 	
 	public void clearPlayers()
@@ -88,7 +116,7 @@ public class TurnManager
 		resetTimer();
 	}
 	
-	private void nextPlayer()
+	public void nextPlayer()
 	{
 		if(!_isRunning)
 			return;

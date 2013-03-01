@@ -37,7 +37,9 @@ public class MenuState extends State {
 	
 	@Override
 	public void onEnter()
-	{	
+	{
+		getApplication().getPhoton().getRenderer().setClearBackground(true, 0.0f, 0.0f, 0.0f, 1.0f);
+		
 		_scnHud = (Scene)getApplication().getAssets().get(R.raw.hud_scene, Scene.class);
 		_camHud = (Camera2D)_scnHud.getCamera();
 		_camHud.setViewPosition(
@@ -56,7 +58,8 @@ public class MenuState extends State {
 		_fontMaterial = (Material)getApplication().getAssets().get(R.raw.badaboom_material, Material.class);
 		
 		_chooseTankText = new Text();
-		_chooseTankText.build("Choose tanks:", _font, _fontMaterial, Font.Alignment.LEFT, Font.Alignment.TOP, 1.0f, 1.0f);
+		_chooseTankText.build("Select players", _font, _fontMaterial, Font.Alignment.CENTER, Font.Alignment.TOP, 1.0f, 1.0f);
+		_chooseTankText.setPosition(_camHud.getViewWidth() * 0.5f, 48.0f);
 		_scnHud.attach(_chooseTankText);
 		
 		_tanks = new Sprite[4];
@@ -95,7 +98,7 @@ public class MenuState extends State {
 			boolean tankHit = false;
 			for(int i = 0; i < _tanks.length; i++)
 			{
-				if(hitTest(_tanks[i], loc[0], loc[1]))
+				if(Utils.hitTest(_tanks[i], loc[0], loc[1]))
 				{
 					tankHit = true;
 					Log.d("TANK!",""+i);
@@ -119,6 +122,7 @@ public class MenuState extends State {
 	public void onExit()
 	{
 		_scnHud.releaseAll();
+		getApplication().getPhoton().unregisterDrawCalls();
 	}
 	
 	private void createTanks()
@@ -128,8 +132,9 @@ public class MenuState extends State {
 		colors[2] = TankColor.GREEN;
 		colors[3] = TankColor.BLUE;
 		
-		float centerX = _camHud.getViewWidth() * 0.5f;
-		float centerY = _camHud.getViewHeight() * 0.5f;
+		final float offset = 96.0f;
+		final float centerX = _camHud.getViewWidth() * 0.5f;
+		final float centerY = (_camHud.getViewHeight() * 0.5f) + 48.0f;
 		
 		for(int i = 0; i < 4; i++)
 		{
@@ -140,7 +145,6 @@ public class MenuState extends State {
 			_shields[i].setVisible(false);
 			_scnHud.attach(_shields[i]);
 		}
-		float offset = 128;
 		_tanks[0].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) - offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) - offset);
 		_tanks[1].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) + offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) - offset);
 		_tanks[2].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) + offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) + offset);
@@ -152,17 +156,6 @@ public class MenuState extends State {
 					_tanks[i].getPositionY() - _tanks[i].getOffsetY() + _shields[i].getOffsetY()
 					);
 		}
-	}
-	
-	private boolean hitTest(Sprite sprite, float posX, float posY)
-	{
-		
-		boolean spriteHit = (posX > sprite.getPositionX() - sprite.getOffsetX() && 
-				posX < sprite.getPositionX() - sprite.getOffsetX() + sprite.getWidth() &&
-				posY > sprite.getPositionY() - sprite.getOffsetY() &&
-				posY < sprite.getPositionY() - sprite.getOffsetY() + sprite.getHeight());
-		
-		return spriteHit;
 	}
 	
 	private PlayerInfo[] prepearePlayerInfos()

@@ -85,13 +85,19 @@ public class GameState extends State implements CommandQueue.Delegate
 		
 		for(PlayerInfo player : _players)
 		{
+			Base base = BaseFactory.getFactory().createBase(player.color);
 			Tank tank = TankFactory.getFactory().createTank(player.color, _width, _height);
 			tank.setRange(tank.getHeight() * 0.5f);
+			base.setRange(base.getHeight() * 0.5f);
 			tank.setReceiver(_cmds);
+			_scn.attach(base);
 			_scn.attach(tank);
 			_actors.attach(tank);
 			_colls.attach(tank);
+			_colls.attach(base);
 			_turns.addPlayer(tank);
+			
+			base.setPosition(tank.getPositionX(), tank.getPositionY());
 		}
 		
 		Material mat = (Material)MainActivity.app.getAssets().get(R.raw.flag_material, Material.class);
@@ -113,8 +119,8 @@ public class GameState extends State implements CommandQueue.Delegate
 		_turnTimerText.setPosition(_camHud.getViewWidth(), _camHud.getViewHeight());
 		_scnHud.attach(_turnTimerText);
 		setTimerText(0);
-		Material mat = (Material)getApplication().getAssets().get(R.raw.turn_next_btn_material, Material.class);
-		Image img = (Image)getApplication().getAssets().get(R.drawable.btn_next_turn, Image.class);
+		mat = (Material)getApplication().getAssets().get(R.raw.turn_next_btn_material, Material.class);
+		img = (Image)getApplication().getAssets().get(R.drawable.btn_next_turn, Image.class);
 		_turnNextBtn = new Sprite(mat);
 		_turnNextBtn.setSizeFromImage(img, 0.75f);
 		_turnNextBtn.setOffsetFromSize(0.0f, 1.0f);

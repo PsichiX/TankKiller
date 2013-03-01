@@ -13,28 +13,46 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	private CollisionManager _collMan;
 	private Controler _controler;
 	private float _range = 0.0f;
+	private boolean _canMove = false;
 	private float _movX = 0.0f;
 	private float _movY = 0.0f;
-	
+	private String _name;
+	private float _initPosX = 0.0f;
+	private float _initPosY = 0.0f;
+	private float _initAngle = 0.0f;
 	private float _destX = 0.0f;
 	private float _destY = 0.0f;
-	private float _spdX = 500.0f;
-	private float _spdY = 500.0f;
+	private float _spd = 500.0f;
 	private float _energy = 100.0f;
 	private CommandQueue _rcv;
-	private float _phase = 0.0f;
 	private Sprite _tower;
+//	private float _pointsMovement = 100.0f;
 	
-	public Tank(Material mat, Sprite tower)
+	public Tank(Material mat, Sprite tower, String name, float initPosX, float initPosY, float initAngle)
 	{
 		super(mat);
-		this._tower = tower;
+		_tower = tower;
+		_name = name;
+		_initPosX = initPosX;
+		_initPosY = initPosY;
+		_initAngle = initAngle;
+		resetPosition();
 	}
 	
-	public void setSpeed(float x, float y)
+	public String getName()
 	{
-		_spdX = x;
-		_spdY = y;
+		return _name;
+	}
+	
+	public void resetPosition()
+	{
+		setPosition(_initPosX, _initPosY);
+		setAngle(_initAngle);
+	}
+	
+	public void setSpeed(float v)
+	{
+		_spd = v;
 	}
 	
 	public float getMoveX()
@@ -50,6 +68,8 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 
 	public void moveToPos(float x, float y)
 	{
+		if(!_canMove)
+			return;
 		float currentPosX = getPositionX();
 		float currentPosY = getPositionY();
 		_destX = x;
@@ -63,7 +83,8 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 			_movY = deltaY / dest;
 		}
 		
-		setAngle((float)(Math.toDegrees(MathHelper.vecDirectionXY(-deltaX, -deltaY)) + 90));
+		setAngle((float)(Math.toDegrees(MathHelper.vecDirectionXY(-deltaX, -deltaY)) - 90));
+		_tower.setAngle(getAngleAlpha());
 	}
 	
 	public float getEnergy()
@@ -78,18 +99,21 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	
 	public void onTurnChanged(boolean my)
 	{
-		
+		_canMove = my;
 	}
 	
 	@Override
 	public void onUpdate(float dt)
 	{
-		if(MathHelper.vecLength(_destX - _x, _destY - _y, 0) > 20)
+		//if(!_canMove)
+		//	return;
+		if(/*_pointsMovement > 0.0f &&*/ MathHelper.vecLength(_destX - _x, _destY - _y, 0) > _spd * dt)
 		{
 			setPosition(
-				_x + _movX * _spdX * dt,
-				_y + _movY * _spdY * dt
+				_x + _movX * _spd * dt,
+				_y + _movY * _spd * dt
 				);
+//			_pointsMovement -= _spd * dt;
 		}
 	}
 	

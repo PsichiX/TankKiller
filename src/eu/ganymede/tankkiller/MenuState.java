@@ -53,7 +53,12 @@ public class MenuState extends State {
 		Touch t = ev.getTouchByState(Touch.State.DOWN);
 		
 		if(t!= null){
-			getApplication().pushState(new TestState());
+			getApplication().pushState(new GameState(new PlayerInfo[]{
+				new PlayerInfo(TankColor.RED),
+				new PlayerInfo(TankColor.GREEN),
+				new PlayerInfo(TankColor.BLUE),
+				new PlayerInfo(TankColor.ORANGE)
+				}));
 		}
 
 	}

@@ -2,13 +2,42 @@ package eu.ganymede.tankkiller;
 
 import java.util.ArrayList;
 
+import com.PsichiX.XenonCoreDroid.Framework.Actors.ActorsManager;
+import com.PsichiX.XenonCoreDroid.XeUtils.CommandQueue;
+
 public class TurnManager
 {
 	private ArrayList<ITurnable> _players = new ArrayList<ITurnable>();
-	private TouchControler _controler;
+	private TouchControler _controler = new TouchControler();
+	private CommandQueue _receiver;
 	private int _turnPlayer = -1;
 	private boolean _isRunning = false;
-	private boolean _isWaiting = false;
+	private float _timePerTurn = 10.0f;
+	private float _timeTurnLeft = 0.0f;
+	
+	public TurnManager(ActorsManager acts)
+	{
+		acts.attach(_controler);
+	}
+	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		release();
+	}
+	
+	public void release()
+	{
+		clearPlayers();
+		if(_controler != null && _controler.getManager() != null)
+			_controler.getManager().detach(_controler);
+	}
+	
+	public void setReceiver(CommandQueue cmds)
+	{
+		_receiver = cmds;
+	}
 	
 	public void addPlayer(ITurnable p)
 	{
@@ -24,13 +53,29 @@ public class TurnManager
 		_players.remove(p);
 	}
 	
+	public void clearPlayers()
+	{
+		stop();
+		_players.clear();
+	}
+	
+	public void resetTimer()
+	{
+		_timeTurnLeft = _timePerTurn;
+	}
+	
+	public float getTimeLeft()
+	{
+		return _timeTurnLeft;
+	}
+	
 	public void start()
 	{
 		if(_isRunning || _players.size() < 2)
 			return;
 		_isRunning = true;
-		_isWaiting = true;
 		nextPlayer();
+		resetTimer();
 	}
 	
 	public void stop()
@@ -38,14 +83,14 @@ public class TurnManager
 		if(!_isRunning)
 			return;
 		_isRunning = false;
-		_isWaiting = false;
 		_turnPlayer = -1;
 		_controler.setTarget(null);
+		resetTimer();
 	}
 	
 	private void nextPlayer()
 	{
-		if(!_isRunning || _isWaiting)
+		if(!_isRunning)
 			return;
 		ITurnable c = (ITurnable)_controler.getTarget();
 		if(c != null)
@@ -55,8 +100,19 @@ public class TurnManager
 		if(c != null)
 			c.onTurnChanged(true);
 		_controler.setTarget(c);
-		_isWaiting = c != null;
+		if(_receiver != null)
+			_receiver.queueCommand(this, "NextPlayer", c);
 	}
 	
-	
+	public void update(float dt)
+	{
+		if(!_isRunning)
+			return;
+		_timeTurnLeft -= dt;
+		if(_timeTurnLeft <= 0.0f)
+		{
+			nextPlayer();
+			resetTimer();
+		}
+	}
 }

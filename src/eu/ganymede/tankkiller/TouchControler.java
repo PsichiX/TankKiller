@@ -1,18 +1,14 @@
 package eu.ganymede.tankkiller;
 
-import android.util.Log;
-
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
 import com.PsichiX.XenonCoreDroid.XeUtils.*;
-import com.PsichiX.XenonCoreDroid.XeAssets;
 import com.PsichiX.XenonCoreDroid.XeApplication.*;
 
 public class TouchControler extends Controler
 {
-	private int _tid = -1;
-	private boolean interrupted = false;
-	private float[] touch_loc;
+	private boolean _interrupted = false;
+	private float[] _touchLoc;
 	
 	@Override
 	public void onInput(Touches ev)
@@ -26,35 +22,29 @@ public class TouchControler extends Controler
 		Touch t = ev.getTouchByState(Touch.State.UP);
 		if(t != null)
 		{
-			Log.d("UP", "  up ");
-			if(!interrupted)
+			if(!_interrupted)
 			{
 				float[] loc = cam.convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
 				tank.moveToPos(loc[0],loc[1]);
 			}
-			interrupted = false;
-			touch_loc= null;
+			_interrupted = false;
+			_touchLoc= null;
 		}
 		t = ev.getTouchByState(Touch.State.IDLE);
 		if(t != null)
 		{
-			Log.d("IDLE", " idle ");
-			if(touch_loc != null)
+			if(_touchLoc != null)
 			{
 				float[] curLoc = cam.convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f);
-				if(MathHelper.vecLength(curLoc[0] - touch_loc[0],curLoc[1] - touch_loc[1], 0) > 5)
-				{
-					interrupted = true;
-				}
+				if(MathHelper.vecLength(curLoc[0] - _touchLoc[0], curLoc[1] - _touchLoc[1], 0) > 5)
+					_interrupted = true;
 			}
 		}
-		
 		t = ev.getTouchByState(Touch.State.DOWN);
 		if(t != null)
 		{
-			Log.d("DOWN", " down ");
-			interrupted = false;
-			touch_loc = cam.convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f); 
+			_interrupted = false;
+			_touchLoc = cam.convertLocationScreenToWorld(t.getX(), t.getY(), -1.0f); 
 		}
 	}
 }

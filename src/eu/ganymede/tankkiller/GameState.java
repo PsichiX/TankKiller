@@ -106,6 +106,9 @@ public class GameState extends State implements CommandQueue.Delegate
 		_flag = new Flag(mat, _width * 0.5f, _height * 0.5f);
 		_flag.setSizeFromImage(img);
 		_flag.setOffsetFromSize(0.5f, 0.5f);
+		_flag.setRange(100);
+		_colls.attach(_flag);
+		_actors.attach(_flag);
 		_scn.attach(_flag);
 		
 		_font = (Font)getApplication().getAssets().get(R.raw.badaboom_font, Font.class);

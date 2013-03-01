@@ -29,6 +29,8 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	private Sprite _tower;
 	private TankColor _color;
 	
+	private Flag _hasFlag = null;
+	
 	private int _score = 0;
 //	private float _pointsMovement = 100.0f;
 	
@@ -123,6 +125,8 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 				_x + _movX * _spd * dt,
 				_y + _movY * _spd * dt
 				);
+				if (_hasFlag != null)
+					_hasFlag.setPosition(_x,  _y-50.f);
 //			_pointsMovement -= _spd * dt;
 		}
 	}
@@ -131,6 +135,11 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	public void onDetach(ActorsManager m)
 	{
 		super.onDetach(m);
+		if(_hasFlag != null)
+		{
+			_hasFlag.setTank(null);
+			_hasFlag = null;
+		}
 		if(getCollisionManager() != null)
 			getCollisionManager().detach(this);
 		if(getTurnManager() != null)
@@ -189,15 +198,15 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	
 	public void onCollision(ICollidable o)
 	{
-		/*if(o instanceof Rock)
-		{
-			Rock r = (Rock)o;
-			if(r.getManager() != null)
-				r.getManager().detach(r);
-			_energy -= 25.0f;
-			if(_rcv != null)
-				_rcv.queueCommand(this, "Energy", new Float(_energy));
-		}*/
+		 if (o instanceof Flag)
+		 {
+			 Flag f = (Flag)o;
+			 if (f.getTank() == null)
+			 {
+				 _hasFlag = f;
+				 f.setTank(this);
+			 }
+		}
 	}
 	
 	public void onAttach(Controler c)
@@ -230,10 +239,21 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	public void flagScored()
 	{
 		_score++;
+		_hasFlag = null;
 	}
 	
 	public int getScore()
 	{
 		return _score;
+	}
+	
+	public boolean hasFlag()
+	{
+		return _hasFlag != null;
+	}
+	
+	public Flag getFlag()
+	{
+		return _hasFlag;
 	}
 }

@@ -49,9 +49,10 @@ public class Base extends ActorSprite implements ICollidable
 		if(o instanceof Tank)
 		{
 			Tank t = (Tank) o;
-			if(t.getColor() == _color)
+			if(t.getColor() == _color && t.hasFlag())
 			{
 				Log.d("BASE <> TANK", "same color " + _color);
+				t.getFlag().resetPosition();
 				t.flagScored();
 				Log.d("BASE SCORE"," tank score " + t.getScore());
 			}

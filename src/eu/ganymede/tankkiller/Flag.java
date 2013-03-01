@@ -14,6 +14,7 @@ public class Flag extends ActorSprite implements ICollidable
 	private float _initPosX = 0.0f;
 	private float _initPosY = 0.0f;
 	private float _range = 0.0f;
+	private Tank _tank = null;
 
 	public Flag(Material mat, float initPosX, float initPosY)
 	{
@@ -27,6 +28,7 @@ public class Flag extends ActorSprite implements ICollidable
 	public void resetPosition()
 	{
 		setPosition(_initPosX, _initPosY);
+		_tank = null;
 	}
 
 	@Override
@@ -66,5 +68,16 @@ public class Flag extends ActorSprite implements ICollidable
 	{
 	    // TODO
 	}
+	
+
+	public void setTank(Tank t)
+	{
+		_tank = t;
+	}
+	
+	public Tank getTank()
+	{
+		return _tank;
+    }
 
 }

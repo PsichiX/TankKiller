@@ -128,23 +128,29 @@ public class MenuState extends State {
 		colors[2] = TankColor.GREEN;
 		colors[3] = TankColor.BLUE;
 		
-		float startX = 50.0f;
-		float startY = 50.0f;
-		
-		float distance = (_camHud.getViewWidth() - (4 * TankFactory.getFactory().getTankWSize()[0])) /5;
+		float centerX = _camHud.getViewWidth() * 0.5f;
+		float centerY = _camHud.getViewHeight() * 0.5f;
 		
 		for(int i = 0; i < 4; i++)
 		{
 			_tanks[i] = TankFactory.getFactory().createTank(colors[i], 0.0f, 0.0f);
 			_scnHud.attach(_tanks[i]);
-			_tanks[i].setPosition((_tanks[i].getWidth() + distance) * i + distance, startY + _tanks[i].getHeight());
 			_tanksChoosed[i] = false;
 			_shields[i] = createShield();
+			_shields[i].setVisible(false);
+			_scnHud.attach(_shields[i]);
+		}
+		float offset = 128;
+		_tanks[0].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) - offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) - offset);
+		_tanks[1].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) + offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) - offset);
+		_tanks[2].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) + offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) + offset);
+		_tanks[3].setPosition(centerX + ( -_tanks[0].getOffsetX() + _tanks[0].getWidth() * 0.5f) - offset, centerY + (-_tanks[0].getOffsetY() + _tanks[0].getHeight()* 0.5f) + offset);
+		
+		for(int i = 0; i < 4; i++)
+		{
 			_shields[i].setPosition(_tanks[i].getPositionX() - _tanks[i].getOffsetX() + _shields[i].getOffsetX(),
 					_tanks[i].getPositionY() - _tanks[i].getOffsetY() + _shields[i].getOffsetY()
 					);
-			_shields[i].setVisible(false);
-			_scnHud.attach(_shields[i]);
 		}
 	}
 	

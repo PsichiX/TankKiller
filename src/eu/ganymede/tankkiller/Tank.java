@@ -27,13 +27,15 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	private float _energy = 100.0f;
 	private CommandQueue _rcv;
 	private Sprite _tower;
+	private TankColor _color;
 //	private float _pointsMovement = 100.0f;
 	
-	public Tank(Material mat, Sprite tower, String name, float initPosX, float initPosY, float initAngle)
+	public Tank(Material mat, Sprite tower, TankColor color, String name, float initPosX, float initPosY, float initAngle)
 	{
 		super(mat);
 		_tower = tower;
 		_name = name;
+		_color = color;
 		_initPosX = initPosX;
 		_initPosY = initPosY;
 		_initAngle = initAngle;
@@ -216,5 +218,10 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	{
 		super.setPosition(x, y, z);
 		_tower.setPosition(x, y, z);
+	}
+	
+	public TankColor getColor()
+	{
+		return _color;
 	}
 }

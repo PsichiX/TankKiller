@@ -67,7 +67,7 @@ public class TankFactory {
 			break;
 		}
 		Sprite tower = new Sprite(matTower);
-		tank = new Tank(mat, tower, color.toString(), x, y, MathHelper.vecDirectionXY((areaWidth * 0.5f) - x, (areaHeight * 0.5f) - y));
+		tank = new Tank(mat, tower,color, color.toString(), x, y, MathHelper.vecDirectionXY((areaWidth * 0.5f) - x, (areaHeight * 0.5f) - y));
 		tower.setSizeFromImage(imgTower);
 		tower.setOffsetFromSize(0.5f, 0.75f);
 		tank.setSizeFromImage(img);

@@ -2,7 +2,7 @@ package eu.ganymede.tankkiller;
 
 import com.PsichiX.XenonCoreDroid.XeApplication.Touch;
 import com.PsichiX.XenonCoreDroid.XeApplication.Touches;
-import com.PsichiX.XenonCoreDroid.XeAssets;
+import com.PsichiX.XenonCoreDroid.XeApplication;
 import com.PsichiX.XenonCoreDroid.XeUtils.CommandQueue;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Camera2D;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Font;
@@ -12,35 +12,38 @@ import com.PsichiX.XenonCoreDroid.Framework.Graphics.Text;
 
 public class StartPopup extends Popup
 {
-	private PopupsManager _man;
+	private XeApplication _app;
 	private CommandQueue _rcv;
 	private Sprite _bg;
-	private Text _title;
+	private Label _title;
 	
-	public StartPopup(XeAssets ass, CommandQueue rcv)
+	public StartPopup(XeApplication app, CommandQueue rcv)
 	{
 		super();
+		_app = app;
 		_rcv = rcv;
-		Material mat = (Material)ass.get(R.raw.fill_color_material, Material.class);
+		Material mat = (Material)app.getAssets().get(R.raw.popup_material, Material.class);
 		_bg = new Sprite(mat);
-		_bg.getProperties().setVec("uColor", new float[]{0.0f, 0.0f, 0.0f, 0.75f});
-		mat = (Material)ass.get(R.raw.badaboom_material, Material.class);
-		Font font = (Font)ass.get(R.raw.badaboom_font, Font.class);
-		_title = new Text();
-		_title.build("Game is paused\n\nTap to start", font, mat, Font.Alignment.CENTER, Font.Alignment.MIDDLE, 1.5f, 1.5f);
+		//_bg.getProperties().setVec("uColor", new float[]{0.0f, 0.0f, 0.0f, 0.75f});
+		mat = (Material)app.getAssets().get(R.raw.shadow_material, Material.class);
+		_title = new Label(mat);
+		_title.setPadding(32.0f, 16.0f);
+		mat = (Material)app.getAssets().get(R.raw.badaboom_material, Material.class);
+		Font font = (Font)app.getAssets().get(R.raw.badaboom_font, Font.class);
+		_title.build("Tap to start battle", font, mat, Font.Alignment.CENTER, Font.Alignment.MIDDLE, 1.5f, 1.5f);
 	}
 	
 	@Override
 	public void onShow(PopupsManager man)
 	{
 		super.onShow(man);
-		_man = man;
 		Camera2D cam = (Camera2D)man.getScene().getCamera();
 		_bg.setSize(cam.getViewWidth(), cam.getViewHeight());
-		_bg.setPosition(0.0f, 0.0f);
-		_title.setPosition(cam.getViewWidth() * 0.5f, cam.getViewHeight() * 0.5f);
+		_bg.setPosition(0.0f, 0.0f, -0.8f);
+		_title.setPosition(cam.getViewWidth() * 0.5f, cam.getViewHeight() * 0.5f, -0.9f);
 		man.getScene().attach(_bg);
 		man.getScene().attach(_title);
+		_app.getTouches().clear();
 	}
 	
 	@Override
@@ -56,7 +59,7 @@ public class StartPopup extends Popup
 	@Override
 	public boolean onInput(Touches ev)
 	{
-		Touch t = ev.getTouchByState(Touch.State.UP);
+		Touch t = ev.getTouchByState(Touch.State.DOWN);
 		if(t != null && _rcv != null)
 			_rcv.queueCommand(this, "Start", null);
 		return true;

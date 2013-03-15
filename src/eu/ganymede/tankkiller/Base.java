@@ -3,58 +3,56 @@ package eu.ganymede.tankkiller;
 import android.util.Log;
 
 import com.PsichiX.XenonCoreDroid.Framework.Actors.ActorSprite;
-import com.PsichiX.XenonCoreDroid.Framework.Graphics.Material;
+import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 
 public class Base extends ActorSprite implements ICollidable
 {
-	private TankColor _color; 
-	public Base(Material mat, TankColor color)
+	private TankColor _color;
+	private Text _text;
+	
+	public Base(Material mat, TankColor color, Text txt)
 	{
 		super(mat);
+		setOrder(-0.1f);
 		_color = color;
+		_text = txt;
+		setFlagsText(0);
 	}
 
-	@Override
 	public void onAttach(CollisionManager m) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onDetach(CollisionManager m) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public CollisionManager getCollisionManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public float getRange() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.0f;
 	}
 
-	@Override
 	public void setRange(float val) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onCollision(ICollidable o) {
 		if(o instanceof Tank)
 		{
 			Tank t = (Tank) o;
 			if(t.getColor() == _color && t.hasFlag())
 			{
-				Log.d("BASE <> TANK", "same color " + _color);
 				t.getFlag().resetPosition();
 				t.flagScored();
-				Log.d("BASE SCORE"," tank score " + t.getScore());
+				setFlagsText(t.getScore());
 			}
 		}
 	}
@@ -62,5 +60,15 @@ public class Base extends ActorSprite implements ICollidable
 	public TankColor getColor()
 	{
 		return _color;
+	}
+	
+	public void setFlagsText(int v)
+	{
+		if(_text == null)
+			return;
+		_text.build("Flags:\n" + v, null, null,
+			Font.Alignment.CENTER, Font.Alignment.MIDDLE,
+			1.0f, 1.0f
+			);
 	}
 }

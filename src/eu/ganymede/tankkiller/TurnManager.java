@@ -8,7 +8,7 @@ import com.PsichiX.XenonCoreDroid.XeUtils.CommandQueue;
 public class TurnManager
 {
 	private ArrayList<ITurnable> _players = new ArrayList<ITurnable>();
-	private TouchControler _controler = new TouchControler();
+	private TouchControler _controler;
 	private CommandQueue _receiver;
 	private int _turnPlayer = -1;
 	private boolean _isRunning = false;
@@ -17,6 +17,7 @@ public class TurnManager
 	
 	public TurnManager(ActorsManager acts)
 	{
+		_controler = new TouchControler();
 		acts.attach(_controler);
 	}
 	
@@ -92,7 +93,12 @@ public class TurnManager
 		return _players.size();
 	}
 	
-	public void resetTimer()
+	public ITurnable getPlayer(int idx)
+	{
+		return _players.size() > 0 && idx < _players.size() ? _players.get(idx) : null;
+	}
+	
+	private void resetTimer()
 	{
 		_timeTurnLeft = _timePerTurn;
 	}
@@ -108,7 +114,6 @@ public class TurnManager
 			return;
 		_isRunning = true;
 		nextPlayer();
-		resetTimer();
 	}
 	
 	public void stop()
@@ -135,6 +140,7 @@ public class TurnManager
 		_controler.setTarget(c);
 		if(_receiver != null)
 			_receiver.queueCommand(this, "NextPlayer", c);
+		resetTimer();
 	}
 	
 	public void update(float dt)
@@ -143,9 +149,6 @@ public class TurnManager
 			return;
 		_timeTurnLeft -= dt;
 		if(_timeTurnLeft <= 0.0f)
-		{
 			nextPlayer();
-			resetTimer();
-		}
 	}
 }

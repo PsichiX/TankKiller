@@ -7,18 +7,18 @@
 	height="384"
 	padding="0.5"
 >
-	<Tile id="0" col="0" row="0" />
-	<Tile id="1" col="0" row="4" />
-	<Tile id="1B" col="0" row="5" />
-	<Tile id="1L" col="1" row="5" />
-	<Tile id="1T" col="2" row="5" />
-	<Tile id="1R" col="3" row="5" />
-	<Tile id="1BL" col="4" row="4" />
-	<Tile id="1TL" col="5" row="4" />
-	<Tile id="1TR" col="6" row="4" />
-	<Tile id="1BR" col="7" row="4" />
-	<Tile id="0TR" col="4" row="5" />
-	<Tile id="0BR" col="5" row="5" />
-	<Tile id="0BL" col="6" row="5" />
-	<Tile id="0TL" col="7" row="5" />
+	<Tile id="0" col="0" row="0" solid="1" />
+	<Tile id="1" col="0" row="4" solid="0" />
+	<Tile id="1B" col="0" row="5" solid="0" />
+	<Tile id="1L" col="1" row="5" solid="0" />
+	<Tile id="1T" col="2" row="5" solid="0" />
+	<Tile id="1R" col="3" row="5" solid="0" />
+	<Tile id="1BL" col="4" row="4" solid="0" />
+	<Tile id="1TL" col="5" row="4" solid="0" />
+	<Tile id="1TR" col="6" row="4" solid="0" />
+	<Tile id="1BR" col="7" row="4" solid="0" />
+	<Tile id="0TR" col="4" row="5" solid="0" />
+	<Tile id="0BR" col="5" row="5" solid="0" />
+	<Tile id="0BL" col="6" row="5" solid="0" />
+	<Tile id="0TL" col="7" row="5" solid="0" />
 </TileSet>

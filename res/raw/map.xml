@@ -81,6 +81,46 @@
 			0 0 ~
 			~ ~ 1
 		</Pattern>
+		<Pattern id="TRB" replace="1">
+			~ 1 ~
+			~ 0 0
+			~ ~ 1
+		</Pattern>
+		<Pattern id="RBL" replace="1">
+			~ ~ ~
+			~ 0 1
+			1 0 ~
+		</Pattern>
+		<Pattern id="BLT" replace="1">
+			1 ~ ~
+			0 0 ~
+			~ 1 ~
+		</Pattern>
+		<Pattern id="LTR" replace="1">
+			~ 0 1
+			1 0 ~
+			~ ~ ~
+		</Pattern>
+		<Pattern id="TLB" replace="1">
+			~ 1 ~
+			0 0 ~
+			1 ~ ~
+		</Pattern>
+		<Pattern id="RTL" replace="1">
+			1 0 ~
+			~ 0 1
+			~ ~ ~
+		</Pattern>
+		<Pattern id="BRT" replace="1">
+			~ ~ 1
+			~ 0 0
+			~ 1 ~
+		</Pattern>
+		<Pattern id="LBR" replace="1">
+			~ ~ ~
+			1 0 ~
+			~ 0 1
+		</Pattern>
 		<Pattern replace="1B">
 			~ ~ ~
 			~ 0 ~
@@ -167,6 +207,7 @@
 			V0 H0
 			TR0 BR0 BL0 TL0
 			TR1 BR1 BL1 TL1
+			TRB RBL BLT RTL
 		" repeat="true"/>
 		<Pass patterns="
 			1B 1L 1T 1R

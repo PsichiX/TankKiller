@@ -3,7 +3,7 @@
    effect="raw/alpha_color_shader"
    blendMode="true"
    blendingSource="SRC_ALPHA"
-   blendingDestination="ONE"
+   blendingDestination="ONE_MINUS_SRC_ALPHA"
    >
    <Samplers>
       <Sampler0

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<Material
+   effect="raw/shadow_shader"
+   blendMode="true"
+   blendingSource="SRC_ALPHA"
+   blendingDestination="ONE_MINUS_SRC_ALPHA"
+   >
+</Material>

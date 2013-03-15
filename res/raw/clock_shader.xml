@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Shader>
+   <Vertex>
+
+attribute vec2 vPosition;
+attribute vec2 vTexCoord;
+uniform mat4 uMatViewProjection;
+uniform mat4 uMatModel;
+varying vec2 coord;
+varying vec2 norm;
+
+void main()
+{
+   coord = vTexCoord;
+   norm = coord * vec2(2.0) - vec2(1.0);
+   gl_Position = (uMatViewProjection * uMatModel) * vec4(vPosition, 0.0, 1.0);
+}
+
+   </Vertex>
+   <Fragment>
+
+precision mediump float;
+varying vec2 coord;
+varying vec2 norm;
+uniform sampler2D uSamp;
+uniform vec4 uPhase;
+
+void main()
+{
+   float d = dot(normalize(norm), uPhase.xy);
+   float a = min(1.0, ceil(d - uPhase.z));
+   vec4 col = texture2D(uSamp, coord);
+   gl_FragColor = col * vec4(1.0, 1.0, 1.0, a * uPhase.w);
+}
+
+   </Fragment>
+   <Data>
+      <Attribute name="vPosition" />
+      <Attribute name="vTexCoord" />
+      <Uniform name="uMatViewProjection" />
+      <Uniform name="uMatModel" />
+      <Uniform name="uSamp" />
+      <Uniform name="uPhase" />
+   </Data>
+</Shader>

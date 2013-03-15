@@ -29,6 +29,8 @@ public class PopupsManager
 	
 	public void push(Popup p)
 	{
+		if(p == null)
+			return;
 		if(_popups.size() > 0)
 			_popups.peek().onHide();
 		_popups.offer(p);
@@ -41,6 +43,38 @@ public class PopupsManager
 			_popups.poll().onHide();
 		if(_popups.size() > 0)
 			_popups.peek().onShow(this);
+	}
+	
+	public void pop(Popup p)
+	{
+		if(p == null)
+			return;
+		if(_popups.size() <= 0)
+			return;
+		int idx = _popups.indexOf(p);
+		if(idx == _popups.size() - 1)
+			pop();
+		else
+			_popups.remove(idx);
+	}
+	
+	public Popup get(Class c)
+	{
+		if(c == null)
+			return null;
+		Popup p = null;
+		for(int i = _popups.size() - 1; i >= 0; i--)
+		{
+			p = _popups.get(i);
+			if(p.getClass() == c)
+				return p;
+		}
+		return null;
+	}
+	
+	public boolean has(Class c)
+	{
+		return get(c) != null;
 	}
 	
 	public int getCount()
@@ -63,5 +97,17 @@ public class PopupsManager
 		if(_popups.size() > 0)
 			return _popups.peek().onInput(ev);
 		return false;
+	}
+	
+	public void onBack()
+	{
+		if(_popups.size() > 0)
+			_popups.peek().onBack();
+	}
+	
+	public void onUpdate(float dt)
+	{
+		if(_popups.size() > 0)
+			_popups.peek().onUpdate(dt);
 	}
 }

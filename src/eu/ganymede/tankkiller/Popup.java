@@ -16,10 +16,23 @@ public abstract class Popup
 		_manager = null;
 	}
 	
+	public boolean onInput(Touches ev)
+	{
+		return false;
+	}
+	
+	public void onBack()
+	{
+		if(_manager != null)
+			_manager.pop();
+	}
+	
+	public void onUpdate(float dt)
+	{
+	}
+	
 	public PopupsManager getOwner()
 	{
 		return _manager;
 	}
-	
-	public boolean onInput(Touches ev){ return false; }
 }

@@ -5,13 +5,13 @@ import com.PsichiX.XenonCoreDroid.Framework.Graphics.Material;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Sprite;
 import com.PsichiX.XenonCoreDroid.XeUtils.MathHelper;
 
-public class TankFactory {
+public class TankFactory
+{
 	private static TankFactory _instance;
 	public static final float AREA_PADDING = 256.0f;
 	
 	private TankFactory()
 	{
-		
 	}
 	
 	public static TankFactory getFactory()
@@ -21,7 +21,7 @@ public class TankFactory {
 		return _instance;
 	}
 	
-	public Tank createTank(TankColor color, float areaWidth, float areaHeight)
+	public Tank createTank(TankColor color, float areaWidth, float areaHeight, boolean lifebar)
 	{
 		Tank tank = null;
 		Material mat;
@@ -66,16 +66,25 @@ public class TankFactory {
 			y = areaHeight - AREA_PADDING;
 			break;
 		}
+		Sprite life = null;
+		if(lifebar)
+		{
+			Material matLife = (Material)MainActivity.app.getAssets().get(R.raw.life_bar_material, Material.class);
+			Image imgLife = (Image)MainActivity.app.getAssets().get(R.drawable.life_shield, Image.class);
+			life = new Sprite(matLife);
+			life.setSizeFromImage(imgLife);
+			life.setOffsetFromSize(0.5f, 0.5f);
+		}
 		Sprite tower = new Sprite(matTower);
-		tank = new Tank(mat, tower,color, color.toString(), x, y, MathHelper.vecDirectionXY((areaWidth * 0.5f) - x, (areaHeight * 0.5f) - y));
+		tank = new Tank(mat, tower, life, color, color.toString(), x, y, MathHelper.vecDirectionXY((areaWidth * 0.5f) - x, (areaHeight * 0.5f) - y));
 		tower.setSizeFromImage(imgTower);
-		tower.setOffsetFromSize(0.5f, 0.75f);
+		tower.setOffsetFromSize(0.5f, 0.65f);
 		tank.setSizeFromImage(img);
-		tank.setOffsetFromSize(0.5f, 0.6f);
+		tank.setOffsetFromSize(0.5f, 0.5f);
 		return tank;
 	}
 	
-	public float[] getTankWSize()
+	public float[] getTankSize()
 	{
 		Image img = (Image)MainActivity.app.getAssets().get(R.drawable.tank_base_red, Image.class);
 		float[] size = new float[2];

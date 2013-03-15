@@ -27,7 +27,7 @@ public class Flag extends ActorSprite implements ICollidable
 
 	public void resetPosition()
 	{
-		setPosition(_initPosX, _initPosY);
+		setPosition(_initPosX, _initPosY, -0.5f);
 		_tank = null;
 	}
 

@@ -1,4 +1,4 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
 public interface ICollidable
 {

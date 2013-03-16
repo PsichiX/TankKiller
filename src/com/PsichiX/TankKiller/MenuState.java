@@ -1,8 +1,6 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-
+import com.PsichiX.TankKiller.R;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Camera2D;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Font;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Image;
@@ -10,12 +8,10 @@ import com.PsichiX.XenonCoreDroid.Framework.Graphics.Material;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Scene;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Sprite;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Text;
-import com.PsichiX.XenonCoreDroid.Framework.Graphics.WaitingScreen;
 import com.PsichiX.XenonCoreDroid.XeApplication.State;
 import com.PsichiX.XenonCoreDroid.XeApplication.Touch;
 import com.PsichiX.XenonCoreDroid.XeApplication.Touches;
 import com.PsichiX.XenonCoreDroid.XeUtils.Message;
-import com.PsichiX.XenonCoreDroid.XePhoton;
 
 public class MenuState extends State
 {

@@ -1,4 +1,4 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
 import com.PsichiX.XenonCoreDroid.Framework.Actors.ActorSprite;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.Material;

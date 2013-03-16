@@ -1,4 +1,4 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
 import java.util.LinkedList;
 
@@ -58,7 +58,7 @@ public class PopupsManager
 			_popups.remove(idx);
 	}
 	
-	public Popup get(Class c)
+	public Popup get(Class<?> c)
 	{
 		if(c == null)
 			return null;
@@ -72,7 +72,7 @@ public class PopupsManager
 		return null;
 	}
 	
-	public boolean has(Class c)
+	public boolean has(Class<?> c)
 	{
 		return get(c) != null;
 	}

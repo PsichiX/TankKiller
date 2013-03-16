@@ -1,4 +1,4 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
 import android.content.Context;
 import android.os.Vibrator;

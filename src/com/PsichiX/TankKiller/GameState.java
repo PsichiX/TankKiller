@@ -1,13 +1,10 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
-import com.PsichiX.XenonCoreDroid.XeSense;
+import com.PsichiX.TankKiller.R;
 import com.PsichiX.XenonCoreDroid.XeUtils.*;
 import com.PsichiX.XenonCoreDroid.XeApplication.*;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
-import com.PsichiX.XenonCoreDroid.XePhoton;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Random;
 
 public class GameState extends State implements CommandQueue.Delegate

@@ -1,4 +1,4 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
 import com.PsichiX.XenonCoreDroid.XeActivity;
 import com.PsichiX.XenonCoreDroid.XeApplication;

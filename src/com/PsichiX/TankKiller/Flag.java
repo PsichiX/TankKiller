@@ -1,12 +1,9 @@
-package eu.ganymede.tankkiller;
+package com.PsichiX.TankKiller;
 
 import android.util.Log;
 
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
-import com.PsichiX.XenonCoreDroid.XeUtils.*;
-import com.PsichiX.XenonCoreDroid.XeSense;
-import com.PsichiX.XenonCoreDroid.XeApplication.*;
 
 public class Flag extends ActorSprite implements ICollidable
 {	

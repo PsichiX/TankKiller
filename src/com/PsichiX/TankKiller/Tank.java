@@ -1,12 +1,8 @@
-package eu.ganymede.tankkiller;
-
-import android.util.Log;
+package com.PsichiX.TankKiller;
 
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
 import com.PsichiX.XenonCoreDroid.Framework.Actors.*;
 import com.PsichiX.XenonCoreDroid.XeUtils.*;
-import com.PsichiX.XenonCoreDroid.XeSense;
-import com.PsichiX.XenonCoreDroid.XeApplication.*;
 
 public class Tank extends ActorSprite implements ICollidable, ITurnable
 {
@@ -14,7 +10,7 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	private CollisionManager _collMan;
 	private Controler _controler;
 	private float _range = 0.0f;
-	private boolean _canMove = false;
+//	private boolean _canMove = false;
 	private boolean _canShot = false;
 	private float _movX = 0.0f;
 	private float _movY = 0.0f;
@@ -167,7 +163,7 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 	
 	public void onTurnChanged(boolean my)
 	{
-		_canMove = my;
+//		_canMove = my;
 		_canShot = my;
 		_pointsMovement = my ? 1000.0f : 0.0f;
 		if(my)
@@ -323,7 +319,7 @@ public class Tank extends ActorSprite implements ICollidable, ITurnable
 		_score++;
 		_hasFlag = null;
 		if(_rcv != null)
-			_rcv.queueCommand(this, "FlagScored", new Integer(_score));
+			_rcv.queueCommand(this, "FlagScored", Integer.valueOf(_score));
 	}
 	
 	public int getScore()

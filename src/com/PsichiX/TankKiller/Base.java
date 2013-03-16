@@ -1,6 +1,4 @@
-package eu.ganymede.tankkiller;
-
-import android.util.Log;
+package com.PsichiX.TankKiller;
 
 import com.PsichiX.XenonCoreDroid.Framework.Actors.ActorSprite;
 import com.PsichiX.XenonCoreDroid.Framework.Graphics.*;
